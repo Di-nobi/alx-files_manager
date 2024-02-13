@@ -4,7 +4,7 @@ import { ObjectId } from 'mongodb';
 import sha1 from 'sha1';
 
 class UsersController {
-  async postNew(req, res) {
+  static async postNew(req, res) {
     const { email, password } = req.body;
     if (!email) {
         return res.status(400).send({"error": "Missing email"});
