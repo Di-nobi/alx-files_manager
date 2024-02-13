@@ -26,3 +26,4 @@ class UsersController {
 
 const userController = new UsersController();
 export default userController;
+
