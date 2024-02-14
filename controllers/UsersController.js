@@ -22,6 +22,17 @@ class UsersController {
     const newUsr = await dbClient.db.collection('users').insertOne({ email, password: hashPass});
     return res.status(201).send({ id: newUsr.insertedId, email: newUsr.ops[0].email });
   }
+
+  async getMe(req, res) {
+    const header = req.headers['x-token'];
+    const data = `auth_${header}`;
+    const usrId = await redisClient.get(data);
+    const usr = await dbClient.db.collection('users').findOne({ _id: new ObjectId(usrId) });
+    if (!usr) {
+      return res.status(401).send({ error: 'Unauthorized' });
+    }
+    return res.status(200).send({"_id": usr._id, "email": usr.email});
+  }
 }
 
 const userController = new UsersController();
